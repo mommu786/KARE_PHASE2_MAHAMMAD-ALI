@@ -1,0 +1,119 @@
+// Node class for Doubly Linked List
+class Node {
+    int data;
+    Node prev;
+    Node next;
+    
+    public Node(int data) {
+        this.data = data;
+        this.prev = null;
+        this.next = null;
+    }
+}
+
+// Doubly Linked List class
+class DoublyLinkedList {
+    Node head;
+    Node tail;
+    
+    // Method to add a node at the end
+    public void add(int data) {
+        Node newNode = new Node(data);
+        
+        if (head == null) {
+            head = tail = newNode;
+        } else {
+            tail.next = newNode;
+            newNode.prev = tail;
+            tail = newNode;
+        }
+    }
+    
+    // Method 1: Print in reverse using tail pointer
+    public void printReverse() {
+        Node current = tail;
+        
+        System.out.print("Reverse: ");
+        while (current != null) {
+            System.out.print(current.data);
+            if (current.prev != null) {
+                System.out.print(" <-> ");
+            }
+            current = current.prev;
+        }
+        System.out.println();
+    }
+    
+    // Method 2: Print in reverse using recursion
+    public void printReverseRecursive() {
+        System.out.print("Reverse (Recursive): ");
+        printReverseHelper(head);
+        System.out.println();
+    }
+    
+    private void printReverseHelper(Node node) {
+        // Base case
+        if (node == null) {
+            return;
+        }
+        
+        // Recursive call first
+        printReverseHelper(node.next);
+        
+        // Print after returning from recursion
+        System.out.print(node.data + " ");
+    }
+    
+    // Display the list (forward order)
+    public void display() {
+        Node current = head;
+        System.out.print("Forward: ");
+        while (current != null) {
+            System.out.print(current.data);
+            if (current.next != null) {
+                System.out.print(" <-> ");
+            }
+            current = current.next;
+        }
+        System.out.println();
+    }
+}
+
+// Main class
+public class Main {
+    public static void main(String[] args) {
+        DoublyLinkedList dll = new DoublyLinkedList();
+        
+        // Add elements
+        dll.add(10);
+        dll.add(20);
+        dll.add(30);
+        dll.add(40);
+        dll.add(50);
+        
+        // Display forward
+        dll.display();
+        
+        // Print in reverse (using tail)
+        dll.printReverse();
+        
+        // Print in reverse (using recursion)
+        dll.printReverseRecursive();
+        
+        // Example with single element
+        DoublyLinkedList dll2 = new DoublyLinkedList();
+        dll2.add(100);
+        
+        System.out.println("\nSingle element list:");
+        dll2.display();
+        dll2.printReverse();
+    }
+}
+  output
+    Forward: 10 <-> 20 <-> 30 <-> 40 <-> 50
+Reverse: 50 <-> 40 <-> 30 <-> 20 <-> 10
+Reverse (Recursive): 50 40 30 20 10 
+
+Single element list:
+Forward: 100
+Reverse: 100
