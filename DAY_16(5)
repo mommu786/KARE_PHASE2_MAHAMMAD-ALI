@@ -1,0 +1,204 @@
+// Node class for Doubly Linked List
+class Node {
+    int data;
+    Node prev;
+    Node next;
+    
+    public Node(int data) {
+        this.data = data;
+        this.prev = null;
+        this.next = null;
+    }
+}
+
+// Doubly Linked List class
+class DoublyLinkedList {
+    Node head;
+    Node tail;
+    
+    // Method 1: Insert at the beginning
+    public void insertAtBeginning(int data) {
+        Node newNode = new Node(data);
+        
+        if (head == null) {
+            head = tail = newNode;
+        } else {
+            newNode.next = head;
+            head.prev = newNode;
+            head = newNode;
+        }
+    }
+    
+    // Method 2: Insert at the end
+    public void insertAtEnd(int data) {
+        Node newNode = new Node(data);
+        
+        if (head == null) {
+            head = tail = newNode;
+        } else {
+            tail.next = newNode;
+            newNode.prev = tail;
+            tail = newNode;
+        }
+    }
+    
+    // Method 3: Insert at specific position (1-indexed)
+    public void insertAtPosition(int data, int position) {
+        // Invalid position
+        if (position < 1) {
+            System.out.println("Invalid position!");
+            return;
+        }
+        
+        // Insert at beginning
+        if (position == 1) {
+            insertAtBeginning(data);
+            return;
+        }
+        
+        Node newNode = new Node(data);
+        Node current = head;
+        int count = 1;
+        
+        // Traverse to position-1
+        while (current != null && count < position - 1) {
+            current = current.next;
+            count++;
+        }
+        
+        // Position beyond list length - insert at end
+        if (current == null) {
+            insertAtEnd(data);
+            return;
+        }
+        
+        // Insert in the middle
+        newNode.next = current.next;
+        newNode.prev = current;
+        
+        if (current.next != null) {
+            current.next.prev = newNode;
+        } else {
+            tail = newNode;  // Update tail if inserting at end
+        }
+        
+        current.next = newNode;
+    }
+    
+    // Method 4: Insert after a specific value
+    public void insertAfterValue(int data, int afterValue) {
+        Node current = head;
+        
+        // Find the node with afterValue
+        while (current != null && current.data != afterValue) {
+            current = current.next;
+        }
+        
+        // Value not found
+        if (current == null) {
+            System.out.println("Value " + afterValue + " not found!");
+            return;
+        }
+        
+        Node newNode = new Node(data);
+        
+        // Insert after current node
+        newNode.next = current.next;
+        newNode.prev = current;
+        
+        if (current.next != null) {
+            current.next.prev = newNode;
+        } else {
+            tail = newNode;  // Update tail if inserting at end
+        }
+        
+        current.next = newNode;
+    }
+    
+    // Display the list (forward)
+    public void display() {
+        Node current = head;
+        System.out.print("Forward:  ");
+        while (current != null) {
+            System.out.print(current.data);
+            if (current.next != null) {
+                System.out.print(" <-> ");
+            }
+            current = current.next;
+        }
+        System.out.println();
+    }
+    
+    // Display the list (reverse)
+    public void displayReverse() {
+        Node current = tail;
+        System.out.print("Reverse:  ");
+        while (current != null) {
+            System.out.print(current.data);
+            if (current.prev != null) {
+                System.out.print(" <-> ");
+            }
+            current = current.prev;
+        }
+        System.out.println();
+    }
+}
+
+// Main class
+public class Main {
+    public static void main(String[] args) {
+        DoublyLinkedList dll = new DoublyLinkedList();
+        
+        System.out.println("=== Insert at End ===");
+        dll.insertAtEnd(10);
+        dll.insertAtEnd(20);
+        dll.insertAtEnd(30);
+        dll.display();
+        
+        System.out.println("\n=== Insert at Beginning ===");
+        dll.insertAtBeginning(5);
+        dll.display();
+        
+        System.out.println("\n=== Insert at Position 3 ===");
+        dll.insertAtPosition(15, 3);
+        dll.display();
+        
+        System.out.println("\n=== Insert After Value 20 ===");
+        dll.insertAfterValue(25, 20);
+        dll.display();
+        
+        System.out.println("\n=== Insert at Position 1 (Beginning) ===");
+        dll.insertAtPosition(1, 1);
+        dll.display();
+        
+        System.out.println("\n=== Insert at Position 10 (Beyond length) ===");
+        dll.insertAtPosition(100, 10);
+        dll.display();
+        
+        System.out.println("\n=== Final List ===");
+        dll.display();
+        dll.displayReverse();
+    }
+}
+output
+  === Insert at End ===
+Forward:  10 <-> 20 <-> 30
+
+=== Insert at Beginning ===
+Forward:  5 <-> 10 <-> 20 <-> 30
+
+=== Insert at Position 3 ===
+Forward:  5 <-> 10 <-> 15 <-> 20 <-> 30
+
+=== Insert After Value 20 ===
+Forward:  5 <-> 10 <-> 15 <-> 20 <-> 25 <-> 30
+
+=== Insert at Position 1 (Beginning) ===
+Forward:  1 <-> 5 <-> 10 <-> 15 <-> 20 <-> 25 <-> 30
+
+=== Insert at Position 10 (Beyond length) ===
+Forward:  1 <-> 5 <-> 10 <-> 15 <-> 20 <-> 25 <-> 30 <-> 100
+
+=== Final List ===
+Forward:  1 <-> 5 <-> 10 <-> 15 <-> 20 <-> 25 <-> 30 <-> 100
+Reverse:  100 <-> 30 <-> 25 <-> 20 <-> 15 <-> 10 <-> 5 <-> 1
